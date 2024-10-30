@@ -1,4 +1,4 @@
-const LinkedList = require('../aula_01/aula01');
+const LinkedList = require('../aula_02/aula01');
 
 const countingSort = (nums) => {
   let max = 0;
