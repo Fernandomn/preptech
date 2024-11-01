@@ -1,4 +1,6 @@
 /**
+ * https://leetcode.com/problems/partition-list/
+ * https://leetcode.com/problems/partition-list/solutions/5988428/where-to-put-the-small/
  * 86. Partition List
  * Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
  * You should preserve the original relative order of the nodes in each of the two partitions.
@@ -28,5 +30,61 @@
  * @return {ListNode}
  */
 var partition = function(head, x) {
-    
+    if (!head || !head.next) return head;
+
+    let current = head;
+    let prev = null;
+    let firstBigger = null
+    let prevBigger = null
+
+    while (current) {
+        if (firstBigger == null && current.val >= x) {
+            firstBigger = current
+            prevBigger = prev
+        }
+
+        if (firstBigger != null && current.val < x) {
+            if (prev) {
+                prev.next = current.next;
+            }
+            if (prevBigger) {
+                prevBigger.next = current;
+            } else {
+                head = current
+            }
+            prevBigger = current
+            prevBigger.next = firstBigger;
+        }
+        // if (current.val >= x) {
+        //     console.log('val > x')
+        //     let monitorPrev = prev;
+        //     let monitorCurrent = current;
+
+        //     while (monitorCurrent) {
+        //         console.log("innerCurrent:", monitorCurrent.val)
+        //         if (monitorCurrent.val < x) {
+        //             console.log("innerCurrent < x")
+
+        //             if (monitorPrev) {
+        //                 monitorPrev.next = monitorCurrent.next;
+        //             }
+        //             if (prev) {
+        //                 prev.next = monitorCurrent;
+        //                 prev = monitorCurrent;
+        //             }else{
+        //                 head = monitorCurrent;
+        //                 prev = head
+        //             }
+        //             monitorCurrent.next = current;
+
+        //             monitorCurrent = current
+        //         }
+        //         monitorPrev = monitorCurrent
+        //         monitorCurrent = monitorCurrent.next
+        //     }
+        // }
+        prev = current
+        current = current.next
+    }
+    return head;
 };
