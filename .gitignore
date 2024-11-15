@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+
+# Diretório de saída de compilação
+dist/
+build/
+
+# Cache de TypeScript
+*.tsbuildinfo
+
+# Arquivos de logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operacional e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Arquivo de configuração local do ambiente
+.env
+.env.local
