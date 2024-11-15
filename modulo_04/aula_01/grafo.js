@@ -20,6 +20,34 @@ class MatrixGraph {
     this.addSingleDirectionEdge(u, v);
     this.addSingleDirectionEdge(v, u);
   }
+
+  dfs(node, visited = new Set()) {
+    if (!visited.has(node)) {
+      visited.add(node);
+      for (let neighbor of new Array(this.vertexCount).keys()) {
+        if (this.adjMatrix[node][neighbor]) {
+          this.dfs(neighbor, visited);
+        }
+      }
+    }
+  }
+
+  dfsVisitedList(node, visited = Set()) {
+    if (visited.has(node)) {
+      return [];
+    }
+    let visitedNodesList = [node];
+
+    for (let neighbor of new Array(this.vertexCount).keys()) {
+      if (this.adjMatrix[node][neighbor]) {
+        visitedNodesList = [
+          ...visitedNodesList,
+          ...this.dfsVisitedList(neighbor, visited),
+        ];
+      }
+    }
+    return visitedNodesList;
+  }
 }
 
 class ListGraph {
@@ -41,5 +69,30 @@ class ListGraph {
   addBiDiretionalEdge(u, v) {
     this.addSingleDirectionEdge(u, v);
     this.addSingleDirectionEdge(v, u);
+  }
+
+  dfs(node, visited = new Set()) {
+    if (!visited.has(node)) {
+      visited.add(node);
+      for (let neighbor of this.adjList[node]) {
+        this.dfs(neighbor, visited);
+      }
+    }
+  }
+
+  dfsVisitedList(node, visited = new Set()) {
+    if (visited.has(node)) {
+      return [];
+    }
+    visited.add(node);
+    let visitedNodesList = [node];
+
+    for (let neighbor of this.adjList[node]) {
+      visitedNodesList = [
+        ...visitedNodesList,
+        ...this.dfsVisitedList(neighbor, visited),
+      ];
+    }
+    return visitedNodesList;
   }
 }
