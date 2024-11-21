@@ -58,17 +58,17 @@ class ListGraph {
   constructor(v) {
     this.vertexCount = v;
     this.edgeCount = 0;
-    this.adjList = new Array(v);
+    this.adjList = new Array(v).fill([])
   }
 
-  addSingleDirectionEdge(u, v) {
+  addEdge(u, v) {
     this.adjList[u].push(v);
     this.edgeCount++;
   }
 
   addBiDiretionalEdge(u, v) {
-    this.addSingleDirectionEdge(u, v);
-    this.addSingleDirectionEdge(v, u);
+    this.addEdge(u, v);
+    this.addEdge(v, u);
   }
 
   dfs(node, visited = new Set()) {
@@ -95,4 +95,64 @@ class ListGraph {
     }
     return visitedNodesList;
   }
+
+  bfs(node) {
+    let visited = new Set();
+    visited.add(node);
+
+    let queue = [];
+    queue.push(node);
+
+    while (queue.length > 0) {
+      let currentNode = qqueue.shift();
+      for (let neigh of this.adjList[currentNode]) {
+        if (!visited.has(neigh)) {
+          visited.add(neigh);
+          queue.push(neigh);
+        }
+      }
+    }
+  }
+
+  bfsVisitedList(node) {
+    let visited = new Set();
+    visited.add(node);
+
+    let queue = [];
+    queue.push(node);
+
+    let listOfVisitedNodes = [];
+
+    while (queue.length > 0) {
+      let currentNode = queue.shift();
+      listOfVisitedNodes.push(currentNode);
+
+      for (let neigh of this.adjList[currentNode]) {
+        if (!visited.has(neigh)) {
+          visited.add(neigh);
+          queue.push(neigh);
+        }
+      }
+    }
+    return listOfVisitedNodes;
+  }
 }
+
+// tests
+
+let g = new ListGraph(6); // ignoring the 0 node
+g.addEdge(1, 2);
+g.addEdge(2, 1);
+g.addEdge(1, 4);
+g.addEdge(4, 1);
+g.addEdge(2, 3);
+g.addEdge(3, 2);
+g.addEdge(2, 4);
+g.addEdge(4, 2);
+g.addEdge(2, 5);
+g.addEdge(5, 2);
+g.addEdge(3, 5);
+g.addEdge(5, 3);
+g.addEdge(4, 5);
+g.addEdge(5, 4);
+console.log(g.bfsVisitedList(1));
