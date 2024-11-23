@@ -1,56 +1,4 @@
-class MatrixGraph {
-  adjMatrix = null;
-  vertexCount = 0;
-  edgeCount = 0;
-
-  constructor(vertex) {
-    this.vertexCount = vertex;
-    this.edgeCount = 0;
-    this.adjMatrix = new Array(vertex)
-      .fill(false)
-      .map(() => new Array(vertex).fill(false));
-  }
-
-  addSingleDirectionEdge(u, v) {
-    this.adjMatrix[u][v] = true;
-    this.edgeCount++;
-  }
-
-  addBiDiretionalEdge(u, v) {
-    this.addSingleDirectionEdge(u, v);
-    this.addSingleDirectionEdge(v, u);
-  }
-
-  dfs(node, visited = new Set()) {
-    if (!visited.has(node)) {
-      visited.add(node);
-      for (let neighbor of new Array(this.vertexCount).keys()) {
-        if (this.adjMatrix[node][neighbor]) {
-          this.dfs(neighbor, visited);
-        }
-      }
-    }
-  }
-
-  dfsVisitedList(node, visited = Set()) {
-    if (visited.has(node)) {
-      return [];
-    }
-    let visitedNodesList = [node];
-
-    for (let neighbor of new Array(this.vertexCount).keys()) {
-      if (this.adjMatrix[node][neighbor]) {
-        visitedNodesList = [
-          ...visitedNodesList,
-          ...this.dfsVisitedList(neighbor, visited),
-        ];
-      }
-    }
-    return visitedNodesList;
-  }
-}
-
-class ListGraph {
+export default class ListGraph {
   adjList = [];
   vertexCount = 0;
   edgeCount = 0;
@@ -58,7 +6,7 @@ class ListGraph {
   constructor(v) {
     this.vertexCount = v;
     this.edgeCount = 0;
-    this.adjList = new Array(v).fill([])
+    this.adjList = new Array(v).fill([]);
   }
 
   addEdge(u, v) {
@@ -137,22 +85,3 @@ class ListGraph {
     return listOfVisitedNodes;
   }
 }
-
-// tests
-
-let g = new ListGraph(6); // ignoring the 0 node
-g.addEdge(1, 2);
-g.addEdge(2, 1);
-g.addEdge(1, 4);
-g.addEdge(4, 1);
-g.addEdge(2, 3);
-g.addEdge(3, 2);
-g.addEdge(2, 4);
-g.addEdge(4, 2);
-g.addEdge(2, 5);
-g.addEdge(5, 2);
-g.addEdge(3, 5);
-g.addEdge(5, 3);
-g.addEdge(4, 5);
-g.addEdge(5, 4);
-console.log(g.bfsVisitedList(1));
