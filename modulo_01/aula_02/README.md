@@ -1,2 +1,2 @@
-# Módulo 01 - Aula 01
+# Módulo 01 - Aula 02
 ## Listas encadeadas
