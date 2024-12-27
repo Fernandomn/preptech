@@ -1,4 +1,6 @@
 /**
+ * https://leetcode.com/problems/merge-two-sorted-lists/submissions/1489334511/
+ * https://leetcode.com/problems/merge-two-sorted-lists/solutions/6191081/recursively-chain-the-lists-by-fernamn-0675/
  * Definition for singly-linked list.
  * function ListNode(val, next) {
  *     this.val = (val===undefined ? 0 : val)
