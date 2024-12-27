@@ -1,5 +1,7 @@
 /**
  * 
+ * https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/
+ * https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/solutions/6190983/just-translating-the-description-by-fern-8kkl/
 1700. Number of Students Unable to Eat Lunch
 Easy
 Topics
@@ -51,5 +53,13 @@ students[i] is 0 or 1.
  * @return {number}
  */
 var countStudents = function(students, sandwiches) {
-    
+    for (let i = 0; i < sandwiches.length; i++) {
+        let index = students.indexOf(sandwiches[i])
+        if (index >= 0) {
+            students.splice(index, 1)
+        } else {
+            return students.length
+        }
+    }
+    return 0
 };
