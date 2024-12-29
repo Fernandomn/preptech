@@ -1,5 +1,6 @@
 /**
  * https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+ * https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solutions/6199519/pilhas-by-fernamn-nmmz/
  * 
  * 1047. Remove All Adjacent Duplicates In String
 
