@@ -1,5 +1,6 @@
 /**
  * https://leetcode.com/problems/middle-of-the-linked-list/description/
+ * https://leetcode.com/problems/middle-of-the-linked-list/solutions/6215022/fast-slow-by-fernamn-9diy/
  * 
  * 876. Middle of the Linked List
 Given the head of a singly linked list, return the middle node of the linked list.
