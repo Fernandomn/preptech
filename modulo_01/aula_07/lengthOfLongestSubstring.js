@@ -1,5 +1,6 @@
 /**
  * https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/solutions/6215302/you-dont-need-to-store-the-current-strin-f3l0/
  * 3. Longest Substring Without Repeating Characters
 Given a string s, find the length of the longest substring without repeating characters.
 
