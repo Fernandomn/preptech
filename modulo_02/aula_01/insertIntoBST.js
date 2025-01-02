@@ -44,28 +44,44 @@ It's guaranteed that val does not exist in the original BST.
  * }
  */
 
-function insertIntoBST(root, val) {
-    if (!root) return new TreeNode(val) 
+function insertIntoBST(root) {
+  // return interactiveInsertion(root, val)
+  return recursiveInsertion(root, val);
+}
 
-    let current = root
-    let prev = null
+const interactiveInsertion = (root) => {
+  const newNode = new TreeNode(val);
 
-    while (current) {
-        prev = current
-        if (val < current.val) {
-            current = current.left
-        } else {
-            current = current.right
-        }
+  if (!root) return newNode;
+
+  let current = root;
+  let prev = null;
+
+  while (current) {
+    prev = current;
+    if (val < current.val) {
+      current = current.left;
+    } else {
+      current = current.right;
     }
+  }
 
-    let newNode = new TreeNode(val)
-    if (val < prev.val) {
-        prev.left = newNode
-    }
-    else {
-        prev.right = newNode
-    }
+  if (val < prev.val) {
+    prev.left = newNode;
+  } else {
+    prev.right = newNode;
+  }
 
-    return root
+  return root;
+};
+
+const recursiveInsertion = (root) => {
+  if (!root) return new TreeNode(val);
+
+  if (val < root.val) {
+    root.left = recursiveInsertion(root.left, val);
+  } else {
+    root.right = recursiveInsertion(root.right, val);
+  }
+  return root;
 };
