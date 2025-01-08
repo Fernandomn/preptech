@@ -43,49 +43,43 @@ class Trie {
   }
 
   insert(word) {
-    // console.log('inserting', word)
     let current = this.root;
 
     for (const char of word) {
-      // let char = word[i]
       let charIndex = this.charIndex(char);
       if (!current.children[charIndex]) {
-        current.children[charIndex] = new TrieNode(char);
+        current.children[charIndex] = new TrieNode();
       }
       current = current.children[charIndex];
     }
     current.endWord = true;
-    // console.log('after insertion', this.root)
   }
 
   search(word) {
-    let current = this.root;
-
-    for (let char of word) {
-      let charIndex = this.charIndex(char);
-      if (
-        current.children[charIndex] &&
-        current.children[charIndex].val == char
-      ) {
-        current = current.children[charIndex];
-      } else return false;
-    }
-    return current.endWord;
+    let lastNode = this.getLastNode(word);
+    // console.log(lastNode)
+    return !!lastNode && lastNode.endWord;
   }
 
   startsWith(prefix) {
+    return !!this.getLastNode(prefix);
+  }
+
+  getLastNode(word) {
     let current = this.root;
 
-    for (let char of prefix) {
+    for (let char of word) {
+      // console.log('char', char)
       let charIndex = this.charIndex(char);
-      if (
-        current.children[charIndex] &&
-        current.children[charIndex].val == char
-      ) {
-        current = current.children[charIndex];
-      } else return false;
+      // console.log('charIndex', charIndex)
+      // console.log('current.children[charIndex]', current.children[charIndex])
+      if (!current.children[charIndex]) {
+        // console.log('enter')
+        return null;
+      }
+      current = current.children[charIndex];
     }
-    return true;
+    return current;
   }
 
   charIndex(char) {
@@ -94,13 +88,12 @@ class Trie {
 }
 
 class TrieNode {
-  val;
+  // val
   children;
   endWord;
 
-  constructor(val = '', children = new Array(26).fill(null)) {
-    this.val = val;
-    this.children = [...children];
+  constructor() {
+    this.children = new Array(26).fill(null);
     this.endWord = false;
   }
 }
