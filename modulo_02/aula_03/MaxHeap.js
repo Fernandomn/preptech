@@ -48,9 +48,7 @@ class MaxHeap {
             // get indices of children
             let leftChildIndex = this.leftChild(index),
                 rightChildIndex = this.rightChild(index),
-
-                // start out largest index at parent index
-                largestIndex = index;
+                largestIndex = index;// start out largest index at parent index
 
             // if the left child > parent
             if (this.values[leftChildIndex] > this.values[largestIndex]) {
