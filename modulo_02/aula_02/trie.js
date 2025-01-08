@@ -48,7 +48,7 @@ class Trie {
     for (const char of word) {
       let charIndex = this.charIndex(char);
       if (!current.children[charIndex]) {
-        current.children[charIndex] = new TrieNode();
+        current.children[charIndex] = new TrieNode(char);
       }
       current = current.children[charIndex];
     }
@@ -56,30 +56,33 @@ class Trie {
   }
 
   search(word) {
-    let lastNode = this.getLastNode(word);
-    // console.log(lastNode)
-    return !!lastNode && lastNode.endWord;
-  }
-
-  startsWith(prefix) {
-    return !!this.getLastNode(prefix);
-  }
-
-  getLastNode(word) {
     let current = this.root;
 
     for (let char of word) {
-      // console.log('char', char)
       let charIndex = this.charIndex(char);
-      // console.log('charIndex', charIndex)
-      // console.log('current.children[charIndex]', current.children[charIndex])
-      if (!current.children[charIndex]) {
-        // console.log('enter')
-        return null;
-      }
-      current = current.children[charIndex];
+      if (
+        current.children[charIndex] &&
+        current.children[charIndex].val == char
+      ) {
+        current = current.children[charIndex];
+      } else return false;
     }
-    return current;
+    return current.endWord;
+  }
+
+  startsWith(prefix) {
+    let current = this.root;
+
+    for (let char of prefix) {
+      let charIndex = this.charIndex(char);
+      if (
+        current.children[charIndex] &&
+        current.children[charIndex].val == char
+      ) {
+        current = current.children[charIndex];
+      } else return false;
+    }
+    return true;
   }
 
   charIndex(char) {
@@ -88,12 +91,13 @@ class Trie {
 }
 
 class TrieNode {
-  // val
+  val;
   children;
   endWord;
 
-  constructor() {
-    this.children = new Array(26).fill(null);
+  constructor(val = '', children = new Array(26).fill(null)) {
+    this.val = val;
+    this.children = [...children];
     this.endWord = false;
   }
 }
