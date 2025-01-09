@@ -48,34 +48,86 @@ The sum of lists[i].length will not exceed 104.
  *     }
  * }
  */
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
 
 function mergeKLists(lists) {
-  // // Using Bruteforce
-  // let remainingLists: number = lists.reduce((acc, cur) => acc + (cur != null ? 1 : 0), 0);
+  // return usingBruteForce(lists)
+  // return usingArray(lists)
+  return usingHeap(lists);
+}
 
-  // let listHeader = new ListNode();
-  // let current = listHeader
+const usingHeap = (lists) => {
+  let remainingLists = lists.reduce(
+    (acc, cur) => acc + (cur != null ? 1 : 0),
+    0
+  );
+  let heap = new MinPriorityQueue({ priority: (node) => node.val });
 
-  // while (remainingLists) {
-  //     let nextListIndex = -1
-  //     let minValue = Infinity
+  let newList = new ListNode();
+  let current = newList;
 
-  //     for (let i = 0; i < lists.length; i++) {
-  //         if (lists[i]) {
-  //             if (lists[i].val < minValue) {
-  //                 minValue = lists[i].val
-  //                 nextListIndex = i
-  //             }
-  //         }
-  //     }
-  //     current.next = lists[nextListIndex]
-  //     lists[nextListIndex] = lists[nextListIndex].next
-  //     if (!lists[nextListIndex]) remainingLists--
-  //     current = current.next
-  // }
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i]) {
+      heap.enqueue({ listIndex: i, val: lists[i].val });
+    }
+  }
+  while (!heap.isEmpty()) {
+    let { listIndex, val } = heap.dequeue().element;
 
-  // return listHeader.next
+    lists[listIndex] = lists[listIndex].next;
+    if (lists[listIndex]) {
+      heap.enqueue({ listIndex, val: lists[listIndex].val });
+    }
 
+    let newNode = new ListNode(val);
+    current.next = newNode;
+    current = current.next;
+  }
+
+  return newList.next;
+};
+
+const usingBruteForce = (lists) => {
+  let remainingLists = lists.reduce(
+    (acc, cur) => acc + (cur != null ? 1 : 0),
+    0
+  );
+
+  let listHeader = new ListNode();
+  let current = listHeader;
+
+  while (remainingLists) {
+    let nextListIndex = -1;
+    let minValue = Infinity;
+
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i]) {
+        if (lists[i].val < minValue) {
+          minValue = lists[i].val;
+          nextListIndex = i;
+        }
+      }
+    }
+    current.next = lists[nextListIndex];
+    lists[nextListIndex] = lists[nextListIndex].next;
+    if (!lists[nextListIndex]) remainingLists--;
+    current = current.next;
+  }
+
+  return listHeader.next;
+};
+
+const usingArray = (lists) => {
   let values = [];
 
   for (let list of lists) {
@@ -88,7 +140,7 @@ function mergeKLists(lists) {
 
   values.sort((a, b) => a - b);
   return arrayToList(values);
-}
+};
 
 const arrayToList = (values) => {
   if (values.length == 0) return null;
