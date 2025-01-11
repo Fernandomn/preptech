@@ -25,59 +25,63 @@ It is guaranteed that the input board has only one solution.
 /**
  Do not return anything, modify board in-place instead.
  */
- function solveSudoku(board: ) {
-    const rowSets= Array.from({ length: 9 }, () => new Set());
-    const colSets= Array.from({ length: 9 }, () => new Set());
-    const boxSets= Array.from({ length: 9 }, () => new Set());
+function solveSudoku(board) {
+  const rowSets = Array.from({ length: 9 }, () => new Set());
+  const colSets = Array.from({ length: 9 }, () => new Set());
+  const boxSets = Array.from({ length: 9 }, () => new Set());
 
-    const getBoxIndex = (row, col) => {
-        return Math.floor(row / 3) * 3 + Math.floor(col / 3);
-    };
+  const getBoxIndex = (row, col) => {
+    return Math.floor(row / 3) * 3 + Math.floor(col / 3);
+  };
 
-    for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-            const value = board[row][col];
-            if (value !== '.') {
-                rowSets[row].add(value);
-                colSets[col].add(value);
-                boxSets[getBoxIndex(row, col)].add(value);
-            }
-        }
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      const value = board[row][col];
+      if (value !== '.') {
+        rowSets[row].add(value);
+        colSets[col].add(value);
+        boxSets[getBoxIndex(row, col)].add(value);
+      }
+    }
+  }
+
+  const backtracking = (row, col) => {
+    if (row >= 9) return true;
+
+    let nextCol = (col + 1) % 9;
+    let nextRow = nextCol == 0 ? row + 1 : row;
+
+    if (board[row][col] != '.') {
+      return backtracking(nextRow, nextCol);
     }
 
-    const backtracking = (row, col) => {
-        if (row >= 9) return true
+    for (let i = 1; i <= 9; i++) {
+      let char = i.toString();
+      let boxIndex = getBoxIndex(row, col);
 
-        let nextCol = (col + 1) % 9
-        let nextRow = nextCol == 0 ? row + 1 : row
+      if (
+        !rowSets[row].has(char) &&
+        !colSets[col].has(char) &&
+        !boxSets[boxIndex].has(char)
+      ) {
+        board[row][col] = char;
+        rowSets[row].add(char);
+        colSets[col].add(char);
+        boxSets[boxIndex].add(char);
 
-        if (board[row][col] != '.') {
-            return backtracking(nextRow, nextCol)
+        if (backtracking(nextRow, nextCol)) {
+          return true;
         }
 
-        for (let i = 1; i <= 9; i++) {
-            let char = i.toString();
-            let boxIndex = getBoxIndex(row, col)
-
-            if (!rowSets[row].has(char) && !colSets[col].has(char) && !boxSets[boxIndex].has(char)) {
-                board[row][col] = char
-                rowSets[row].add(char)
-                colSets[col].add(char)
-                boxSets[boxIndex].add(char)
-
-                if (backtracking(nextRow, nextCol)) {
-                    return true
-                }
-
-                // backtracking
-                board[row][col] = '.'
-                rowSets[row].delete(char)
-                colSets[col].delete(char)
-                boxSets[boxIndex].delete(char)
-            }
-        }
-        return false
+        // backtracking
+        board[row][col] = '.';
+        rowSets[row].delete(char);
+        colSets[col].delete(char);
+        boxSets[boxIndex].delete(char);
+      }
     }
+    return false;
+  };
 
-    backtracking(0, 0)
-};
+  backtracking(0, 0);
+}
