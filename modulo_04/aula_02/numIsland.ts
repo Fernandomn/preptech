@@ -69,11 +69,8 @@ const checkIsland = (grid: string[][], i: number, j: number): void => {
 
     grid[i][j] = "-1";
 
-    for (let u = -1; u <= 1; u++) {
-        for (let v = -1; v <= 1; v++) {
-            if ((u === 0 && v !== 0) || (u !== 0 && v === 0)) {
-                checkIsland(grid, i + u, j + v)
-            }
-        }
-    }
+    checkIsland(grid, i - 1, j)
+    checkIsland(grid, i + 1, j)
+    checkIsland(grid, i, j - 1)
+    checkIsland(grid, i, j + 1)
 }
