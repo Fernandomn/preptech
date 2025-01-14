@@ -25,3 +25,22 @@ edges[i].length == 2
 ui != vi
 The given edges represent a valid star graph.
  */
+
+function findCenter(edges) {
+  let n = edges.length + 1;
+  let connList = new Array(n + 1).fill(0);
+
+  for (let [origin, destiny] of edges) {
+    connList[origin]++;
+    connList[destiny]++;
+
+    // tentativa 2: qualquer nó com mais de uma conexão é o centro da estrela
+    if (connList[origin] > 1) return origin;
+    if (connList[destiny] > 1) return destiny;
+  }
+
+  // tentativa 1: verificando as condições da lista
+  // for (let i = 0; i < connList.length; i++) {
+  //     if (connList[i] == n - 1) return i
+  // }
+}
