@@ -38,3 +38,16 @@ Constraints:
 All the values of coins are unique.
 0 <= amount <= 5000
  */
+
+function change(amount, coins) {
+  let memo = new Array(amount + 1).fill(0);
+  memo[0] = 1;
+
+  for (let coin of coins) {
+    for (let i = coin; i <= amount; i++) {
+      memo[i] += memo[i - coin];
+    }
+  }
+
+  return memo[amount];
+}
