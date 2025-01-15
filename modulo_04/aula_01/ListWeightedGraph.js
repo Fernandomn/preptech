@@ -21,7 +21,6 @@ class ListWeightedGraph {
     this.addEdge(v, u, w);
   }
 
-  
   dijkstraWithouthHeap(source, target) {
     let visited = new Set();
     let distances = new Array(this.vertexCount).fill(Infinity);
@@ -37,19 +36,83 @@ class ListWeightedGraph {
 
       if (!visited.has(currentNode)) {
         visited.add(currentNode);
-          
+
         for (let { vertex, weight } of this.adjList[currentNode]) {
           const newDistance = currentDistance + weight;
-            
+
           if (newDistance < distances[vertex]) {
-            distances[vertex] = newDistance
-            queue.enqueue({node: vertex, distance: newDistance})
+            distances[vertex] = newDistance;
+            queue.enqueue({ node: vertex, distance: newDistance });
           }
         }
       }
     }
-      
-      return distances
+
+    return distances;
+  }
+
+  kruskal_noDisjointSets() {
+    const edges = [];
+    for (let node = 0; node < this.vertexCount; node++) {
+      for (let neigh of this.adjList[node]) {
+        edges.push([neigh.weight, node, neigh.vertex]);
+      }
+    }
+
+    edges.sort((a, b) => a[0] - b[0]);
+    const subsets = new Array(this.vertexCount)
+      .fill(0)
+      .map((_, index) => index);
+
+    let sumOfEdges = 0;
+    let countEdges = 0;
+
+    for (let [weight, source, target] of edges) {
+      if (subsets[source] != subsets[target]) {
+        sumOfEdges += weight;
+        let subset = subsets[source];
+
+        for (let i = 0; i < this.vertexCount; i++) {
+          if (subsets[i] == subset) {
+            subsets[i] = subsets[target];
+          }
+        }
+        countEdges++;
+
+        if (countEdges == this.vertexCount - 1) {
+          break;
+        }
+      }
+    }
+    return sumOfEdges;
+  }
+
+  kruskal_withDisjointSets() {
+    const edges = [];
+    for (let node = 0; node < this.vertexCount; node++) {
+      for (let neigh of this.adjList[node]) {
+        edges.push([neigh.weight, node, neigh.vertex]);
+      }
+    }
+
+    edges.sort((a, b) => a[0] - b[0]);
+    const subsets = new DisjointSet(this.vertexCount);
+
+    let sumOfEdges = 0;
+    let countEdges = 0;
+
+    for (let [weight, source, target] of edges) {
+      if (subsets.find(source) != subsets.find(target)) {
+        sumOfEdges += weight;
+        subsets.union(source, target);
+        countEdges++;
+
+        if (countEdges == this.vertexCount - 1) {
+          break;
+        }
+      }
+    }
+    return sumOfEdges;
   }
 
   printGraph() {
@@ -64,6 +127,25 @@ class ListWeightedGraph {
       console.log(exit);
     }
     console.log('end graph.');
+  }
+}
+
+class DisjointSet {
+  subsets = [];
+
+  constructor(size) {
+    this.subsets = new Array(size).fill(0).map((_, index) => index);
+  }
+
+  find(elem) {
+    if (this.subsets[elem] != elem) {
+      this.subsets[elem] = this.find(this.subsets[elem]);
+    }
+    return this.subsets[elem];
+  }
+
+  union(elem1, elem2) {
+    this.subsets[this.find(elem1)] = this.find(elem2);
   }
 }
 
@@ -98,5 +180,8 @@ g2.addEdge(7, 5, 7); //T->E
 g2.addEdge(6, 7, 3); //F->T
 g2.addEdge(7, 6, 3); //T->F
 
-g2.printGraph();
-console.log(`Dijskstra's of 0 and 7: ${g2.dijkstraWithouthHeap(0, 7)}`);
+// g2.printGraph();
+// console.log(`Dijskstra's of 0 and 7: ${g2.dijkstraWithouthHeap(0, 7)}`);
+
+let resultKruskal = g2.kruskal_noDisjointSets();
+console.log(`result Kruskal: ${resultKruskal}`);
