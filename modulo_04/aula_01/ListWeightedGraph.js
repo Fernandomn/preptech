@@ -21,52 +21,35 @@ class ListWeightedGraph {
     this.addEdge(v, u, w);
   }
 
+  
   dijkstraWithouthHeap(source, target) {
-    let visited = new Array(this.vertexCount).fill(false);
-    let distances = new Array(this.vertexCount).fill(Number.MAX_VALUE);
-    // let unvisited = Object.keys(new Array(this.vertexCount));
-
+    let visited = new Set();
+    let distances = new Array(this.vertexCount).fill(Infinity);
     distances[source] = 0;
 
-    while (visited.some((val) => !val)) {
-      let workingNode = this.minimunDistance(distances, visited);
-      //   if (workingNode < 0) {
-      //     return -1;
-      //   }
-      if (workingNode == target) {
-        return distances[target];
-      }
-      visited[workingNode] = true;
+    const queue = new MinPriorityQueue({ priority: (node) => node.distance });
 
-      for (let { neigh, weight } of this.adjList[workingNode]) {
-        const newdistance = distances[workingNode] + weight;
-        if (newdistance < distances[neigh]) {
-          distances[neigh] = newdistance;
+    queue.enqueue({ node: source, distance: 0 });
+
+    while (queue.size()) {
+      let { node: currentNode, distance: currentDistance } =
+        queue.dequeue().element;
+
+      if (!visited.has(currentNode)) {
+        visited.add(currentNode);
+          
+        for (let { vertex, weight } of this.adjList[currentNode]) {
+          const newDistance = currentDistance + weight;
+            
+          if (newDistance < distances[vertex]) {
+            distances[vertex] = newDistance
+            queue.enqueue({node: vertex, distance: newDistance})
+          }
         }
       }
     }
-    return distances[target];
-    //     for (let count = 0; count < this.vertexCount - 1; count++) {
-    //       let closestNode = minimunDistance(distances, visited);
-    //       visited[closestNode] = true;
-
-    //       for(let v = 0; v < this.vertexCount; v++){
-    // if(!visited[v] && this.adjList[])
-    //       }
-    //     }
-  }
-
-  minimunDistance(distances, visited) {
-    let min = Number.MAX_VALUE;
-    let minIndex = -1;
-
-    for (let v = 0; v < this.vertexCount; v++) {
-      if (!visited[v] && distances[v] <= min) {
-        min = distances[v];
-        minIndex = v;
-      }
-    }
-    return minIndex;
+      
+      return distances
   }
 
   printGraph() {
