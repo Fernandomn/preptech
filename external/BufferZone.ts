@@ -57,16 +57,16 @@ class BufferZone {
 
   private getValidTriple(index: number): number[] {
     const window = 3;
-    for (
-      let i = index - window > 0 ? index - window + 1 : 0;
-      i < index + window && i < this.buffer.length;
-      i++
-    ) {
-      if (
-        Math.abs(this.buffer[i] - this.buffer[i + window - 1]) <= this.distance
-      ) {
-        let result = [this.buffer[i], this.buffer[i + 1], this.buffer[i + 2]];
-        this.buffer.splice(i, 3);
+    const start = Math.max(0, index - window + 1);
+    const end = Math.min(index + window, this.buffer.length);
+
+    for (let i = start; i < end; i++) {
+      const first = this.buffer[i];
+      const last = this.buffer[i + window - 1];
+
+      if (Math.abs(last - first) <= this.distance) {
+        const result = this.buffer.slice(i, i + window);
+        this.buffer.splice(i, window);
         return result;
       }
     }
