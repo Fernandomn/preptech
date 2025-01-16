@@ -14,10 +14,12 @@ class BufferZone {
     this.buffer = [];
   }
 
+  // $$O(1)$$
   get lastIndex(): number {
     return this.buffer.length - 1;
   }
 
+  // $$O(log n)$$
   public receiveBuffering(input: number): void {
     let index = this.insertOrdered(input);
 
@@ -28,6 +30,7 @@ class BufferZone {
     }
   }
 
+  // $$O(log n)$$
   private insertOrdered(input: number): number {
     if (!this.buffer.length || input > this.buffer[this.lastIndex]) {
       this.buffer.push(input);
@@ -55,12 +58,14 @@ class BufferZone {
     return newIndex;
   }
 
+  // $$O(1)$$
   private getValidTriple(index: number): number[] {
     const window = 3;
     const start = Math.max(0, index - window + 1);
     const end = Math.min(index + window, this.buffer.length);
 
     for (let i = start; i < end; i++) {
+      //Only runs at most 3 times
       const first = this.buffer[i];
       const last = this.buffer[i + window - 1];
 
