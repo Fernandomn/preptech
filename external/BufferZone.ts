@@ -1,5 +1,5 @@
 /**
- * Entrevista numero 01, dia 01/15/2025
+ * Entrevista numero 01, dia 15/01/2025
  * Você tem um método que recebe um numero flutuante. Deve armazenar esse numero e,
  * se houverem 3 números que, combinados, estejam dentro de uma certa distancia,
  * Deve imprimir essa tripla, e remover esses numeros da lista.
