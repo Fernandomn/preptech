@@ -12,5 +12,8 @@
   "devDependencies": {
     "typescript": "^5.6.3"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@datastructures-js/priority-queue": "^5.4.0"
+  }
 }
