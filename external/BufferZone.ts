@@ -62,9 +62,8 @@ class BufferZone {
   private getValidTriple(index: number): number[] {
     const window = 3;
     const start = Math.max(0, index - window + 1);
-    const end = Math.min(index + window, this.buffer.length);
 
-    for (let i = start; i < end; i++) {
+    for (let i = start; i <= index; i++) {
       //Only runs at most 3 times
       const first = this.buffer[i];
       const last = this.buffer[i + window - 1];
